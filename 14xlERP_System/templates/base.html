@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RealKuku ERP{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #4CAF50, #2196F3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #FF9800;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white !important;
+        }
+        .navbar-nav .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+        }
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+        }
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .card-header {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #5a6fd8, #6a4190);
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border: none;
+        }
+        .btn-warning {
+            background: linear-gradient(90deg, #FF9800, #F57C00);
+            border: none;
+        }
+        .btn-danger {
+            background: linear-gradient(90deg, #f44336, #d32f2f);
+            border: none;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .badge {
+            font-size: 0.8em;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .alert {
+            border-radius: 12px;
+            border: none;
+        }
+        .alert-info {
+            background: linear-gradient(90deg, #00BCD4, #0097A7);
+            color: white;
+        }
+        .alert-success {
+            background: linear-gradient(90deg, #4CAF50, #388E3C);
+            color: white;
+        }
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            .sidebar {
+                margin-bottom: 10px;
+                padding: 15px;
+            }
+            .stat-card {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            .stat-card .number {
+                font-size: 1.8rem;
+            }
+            .btn-custom {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+            .card-header h5 {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .stat-card {
+                text-align: center;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-graph-up"></i> RealKuku ERP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin"><i class="bi bi-gear"></i> Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-person"></i> {{ user.username }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2">
+                <div class="sidebar">
+                    <h5 class="mb-3"><i class="bi bi-menu-button-wide"></i> Menu</h5>
+                    <a href="/" class="{% if request.resolver_match.url_name == 'dashboard_overview' %}active{% endif %}">
+                        <i class="bi bi-house"></i> Dashboard
+                    </a>
+                    <a href="/sales/" class="{% if request.resolver_match.app_name == 'sales' %}active{% endif %}">
+                        <i class="bi bi-receipt"></i> Sales
+                    </a>
+                    <a href="/inventory/" class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
+                        <i class="bi bi-box2"></i> Inventory
+                    </a>
+                    <a href="/customers/" class="{% if request.resolver_match.app_name == 'customers' %}active{% endif %}">
+                        <i class="bi bi-people"></i> Customers
+                    </a>
+                    <a href="/expenses/" class="{% if request.resolver_match.app_name == 'expenses' %}active{% endif %}">
+                        <i class="bi bi-cash-flow"></i> Expenses
+                    </a>
+                    <a href="/chama/" class="{% if request.resolver_match.app_name == 'chama' %}active{% endif %}">
+                        <i class="bi bi-piggy-bank"></i> Chama
+                    </a>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-9 col-lg-10">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

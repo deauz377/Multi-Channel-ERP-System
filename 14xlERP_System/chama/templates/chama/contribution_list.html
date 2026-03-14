@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Contributions - RealKuku ERP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-piggy-bank"></i> Contributions</h1>
+    <a href="{% url 'chama:contribution_create' %}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Contribution</a>
+</div>
+
+{% if contributions %}
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Member</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Business</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribution in contributions %}
+                        <tr>
+                            <td>{{ contribution.member.name }}</td>
+                            <td>KES {{ contribution.amount }}</td>
+                            <td>{{ contribution.date|date:"M d, Y" }}</td>
+                            <td>{{ contribution.business.name|default:"N/A" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-info"><i class="bi bi-info-circle"></i> No contributions yet. <a href="{% url 'chama:contribution_create' %}">Add one now!</a></div>
+{% endif %}
+{% endblock %}

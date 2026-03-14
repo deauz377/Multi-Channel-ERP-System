@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - RealKuku ERP{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1><i class="bi bi-piggy-bank"></i> {{ title }}</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label>{{ form.member.label }}</label>
+                        {{ form.member }}
+                        {% if form.member.errors %}
+                            <div class="invalid-feedback d-block">{{ form.member.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label>{{ form.amount.label }}</label>
+                        {{ form.amount }}
+                        {% if form.amount.errors %}
+                            <div class="invalid-feedback d-block">{{ form.amount.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label>{{ form.date.label }}</label>
+                        {{ form.date }}
+                        {% if form.date.errors %}
+                            <div class="invalid-feedback d-block">{{ form.date.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label>{{ form.business.label }}</label>
+                        {{ form.business }}
+                        {% if form.business.errors %}
+                            <div class="invalid-feedback d-block">{{ form.business.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Save</button>
+                <a href="{% url 'chama:contribution_list' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

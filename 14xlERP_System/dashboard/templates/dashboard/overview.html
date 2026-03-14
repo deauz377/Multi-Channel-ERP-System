@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - RealKuku ERP{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="bi bi-graph-up"></i> Control Center</h1>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="row mb-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card" style="border-top: 4px solid #FF6B6B;">
+            <div class="number">KES {{ sales_today|default:0 }}</div>
+            <div class="label">Today's Sales</div>
+            <i class="bi bi-graph-up-arrow" style="font-size: 2rem; color: #FF6B6B; margin-top: 10px;"></i>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card" style="border-top: 4px solid #4ECDC4;">
+            <div class="number">KES {{ stock_value|default:0 }}</div>
+            <div class="label">Stock Value</div>
+            <i class="bi bi-box-seam" style="font-size: 2rem; color: #4ECDC4; margin-top: 10px;"></i>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card" style="border-top: 4px solid #45B7D1;">
+            <div class="number">KES {{ expenses_month|default:0 }}</div>
+            <div class="label">Expenses This Month</div>
+            <i class="bi bi-cash-coin" style="font-size: 2rem; color: #45B7D1; margin-top: 10px;"></i>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card" style="border-top: 4px solid #FFA07A;">
+            <div class="number">KES {{ profit|default:0 }}</div>
+            <div class="label">Profit</div>
+            <i class="bi bi-trophy" style="font-size: 2rem; color: #FFA07A; margin-top: 10px;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Debtors & Creditors -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-exclamation-circle-fill"></i> Debtors
+            </div>
+            <div class="card-body">
+                {% if debtors %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Balance Due</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for debtor in debtors %}
+                                    <tr>
+                                        <td>{{ debtor.name }}</td>
+                                        <td><strong>KES {{ debtor.balance }}</strong></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted"><i class="bi bi-check-circle"></i> No outstanding debts!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-info-circle-fill"></i> Creditors
+            </div>
+            <div class="card-body">
+                {% if creditors %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <tbody>
+                                {% for creditor in creditors %}
+                                    <tr>
+                                        <td>{{ creditor }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted"><i class="bi bi-check-circle"></i> No outstanding credits!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
