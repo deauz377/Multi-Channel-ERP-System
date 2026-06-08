@@ -1,0 +1,117 @@
+{% extends 'chama/base.html' %}
+
+{% block title %}{{ member.name }} - Member Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>{{ member.name }}</h1>
+    </div>
+</div>
+
+<!-- Member Info -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Member Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> {{ member.email }}</p>
+                <p><strong>Phone:</strong> {{ member.phone }}</p>
+                <p><strong>Join Date:</strong> {{ member.join_date }}</p>
+                <p><strong>Status:</strong> <span class="badge {% if member.is_active %}bg-success{% else %}bg-danger{% endif %}">{% if member.is_active %}Active{% else %}Inactive{% endif %}</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Statistics</h5>
+                <p>Total Contributed: <strong>{{ total_contributed|floatformat:2 }}</strong></p>
+                <p>Active Loans: <strong>{{ total_loans|floatformat:2 }}</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contributions -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Contributions</h5>
+            </div>
+            <div class="card-body">
+                {% if contributions %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contribution in contributions %}
+                                    <tr>
+                                        <td>{{ contribution.amount|floatformat:2 }}</td>
+                                        <td>{{ contribution.date }}</td>
+                                        <td>{{ contribution.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No contributions yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loans -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Loans</h5>
+            </div>
+            <div class="card-body">
+                {% if loans %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for loan in loans %}
+                                    <tr>
+                                        <td><a href="{% url 'chama:loan_detail' loan.pk %}">{{ loan.id }}</a></td>
+                                        <td>{{ loan.principal|floatformat:2 }}</td>
+                                        <td>{{ loan.interest }}%</td>
+                                        <td>{{ loan.due_date }}</td>
+                                        <td><span class="badge bg-info">{{ loan.get_status_display }}</span></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No loans.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

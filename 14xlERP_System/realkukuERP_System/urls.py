@@ -1,5 +1,5 @@
 """
-URL configuration for realkukuERP_System project.
+URL configuration for 14xlevel ERP project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -24,5 +24,7 @@ urlpatterns = [
     path('sales/', include('sales.urls')),
     path('customers/', include('customers.urls')),
     path('expenses/', include('expenses.urls')),
-    path('chama/', include('chama.urls')),
+    path('payroll/', include('payroll.urls')),
+    path('hr/', include('hr.urls')),
+    path('accounting/', include('accounting.urls')),
 ]

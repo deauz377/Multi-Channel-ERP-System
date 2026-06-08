@@ -41,11 +41,11 @@ GRANT ALL PRIVILEGES ON DATABASE 14xl_erp TO erp_user;
 ```bash
 cd /var/www
 sudo mkdir 14xl_erp
-sudo chown -R $USER:$USER realkuku_erp
-cd realkuku_erp
+sudo chown -R $USER:$USER 14xlevel_erp
+cd 14xlevel_erp
 
 # Copy your project files here
-# git clone https://github.com/your-repo/realkuku-erp.git .
+# git clone https://github.com/your-repo/14xlevel-erp.git .
 ```
 
 ### Create virtual environment
@@ -65,7 +65,7 @@ Create `.env` file:
 ```bash
 DEBUG=False
 SECRET_KEY=your-very-secure-secret-key-here
-DATABASE_URL=postgresql://erp_user:your_secure_password@localhost:5432/realkuku_erp
+DATABASE_URL=postgresql://erp_user:your_secure_password@localhost:5432/14xlevel_erp
 ALLOWED_HOSTS=your-domain.com,www.your-domain.com
 ```
 
@@ -96,8 +96,8 @@ After=network.target
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/realkuku_erp
-ExecStart=/var/www/realkuku_erp/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/realkuku_erp/realkuku_erp.sock realkukuERP_System.wsgi:application
+WorkingDirectory=/var/www/14xlevel_erp
+ExecStart=/var/www/14xlevel_erp/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/14xlevel_erp/14xlevel_erp.sock realkukuERP_System.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -114,7 +114,7 @@ sudo systemctl status gunicorn
 
 ### Create Nginx site configuration
 ```bash
-sudo nano /etc/nginx/sites-available/realkuku_erp
+sudo nano /etc/nginx/sites-available/14xlevel_erp
 ```
 
 Add this content:
@@ -126,23 +126,23 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        alias /var/www/realkuku_erp/static/;
+        alias /var/www/14xlevel_erp/static/;
     }
 
     location /media/ {
-        alias /var/www/realkuku_erp/media/;
+        alias /var/www/14xlevel_erp/media/;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/var/www/realkuku_erp/realkuku_erp.sock;
+        proxy_pass http://unix:/var/www/14xlevel_erp/14xlevel_erp.sock;
     }
 }
 ```
 
 ### Enable site and restart Nginx
 ```bash
-sudo ln -s /etc/nginx/sites-available/realkuku_erp /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/14xlevel_erp /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -179,20 +179,20 @@ local   all             all                                     md5
 ```
 
 ### Regular backups
-Create backup script `/var/www/realkuku_erp/backup.sh`:
+Create backup script `/var/www/14xlevel_erp/backup.sh`:
 ```bash
 #!/bin/bash
 BACKUP_DIR="/var/www/backups"
 DATE=$(date +%Y%m%d_%H%M%S)
-pg_dump -U erp_user -h localhost realkuku_erp > $BACKUP_DIR/realkuku_erp_$DATE.sql
+pg_dump -U erp_user -h localhost 14xlevel_erp > $BACKUP_DIR/14xlevel_erp_$DATE.sql
 find $BACKUP_DIR -name "*.sql" -mtime +7 -delete
 ```
 
 Make executable and add to cron:
 ```bash
-chmod +x /var/www/realkuku_erp/backup.sh
+chmod +x /var/www/14xlevel_erp/backup.sh
 crontab -e
-# Add: 0 2 * * * /var/www/realkuku_erp/backup.sh
+# Add: 0 2 * * * /var/www/14xlevel_erp/backup.sh
 ```
 
 ## 8. Monitoring
@@ -204,8 +204,8 @@ sudo apt install htop iotop -y
 
 ### Log rotation
 ```bash
-sudo nano /etc/logrotate.d/realkuku_erp
-/var/www/realkuku_erp/logs/*.log {
+sudo nano /etc/logrotate.d/14xlevel_erp
+/var/www/14xlevel_erp/logs/*.log {
     daily
     missingok
     rotate 52

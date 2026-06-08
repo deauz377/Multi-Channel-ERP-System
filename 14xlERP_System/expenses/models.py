@@ -1,9 +1,9 @@
 from django.db import models
+from tenants.models import TenantModel
 
 # Create your models here.
 
-class Expense(models.Model):
-    business = models.ForeignKey('core.Business', on_delete=models.CASCADE, null=True, blank=True)
+class Expense(TenantModel):
     CATEGORY_CHOICES = [
         ('rent','Rent'),
         ('salaries','Salaries'),
@@ -12,7 +12,7 @@ class Expense(models.Model):
         ('other','Other'),
     ]
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True)  # Placeholder for encryption
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     date = models.DateField()
 

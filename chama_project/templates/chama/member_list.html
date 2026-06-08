@@ -1,0 +1,48 @@
+{% extends 'chama/base.html' %}
+
+{% block title %}Members - Chama Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Members</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'chama:member_create' %}" class="btn btn-primary">Add Member</a>
+    </div>
+</div>
+
+<div class="row">
+    {% for member in members %}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ member.name }}</h5>
+                    <p class="card-text text-muted">
+                        <small>
+                            Email: {{ member.email }}<br>
+                            Phone: {{ member.phone }}<br>
+                            Joined: {{ member.join_date }}
+                        </small>
+                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted">Total Contributed</small>
+                            <h6>{{ member.contributions.aggregate|get_item:"amount__sum"|default:"0"|floatformat:2 }}</h6>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Active Loans</small>
+                            <h6>{{ member.loans.filter|length }}</h6>
+                        </div>
+                    </div>
+                    <a href="{% url 'chama:member_detail' member.pk %}" class="btn btn-sm btn-outline-primary mt-3">View Profile</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No members yet. <a href="{% url 'chama:member_create' %}">Create one now</a>.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

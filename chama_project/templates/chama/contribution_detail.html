@@ -1,0 +1,28 @@
+{% extends 'chama/base.html' %}
+
+{% block title %}Contribution Details - Chama Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Contribution Details</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Member: {{ contribution.member.name }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Amount:</strong> {{ contribution.amount|floatformat:2 }}</p>
+                <p><strong>Date:</strong> {{ contribution.date }}</p>
+                <p><strong>Description:</strong> {{ contribution.description }}</p>
+                <p><small class="text-muted">Recorded: {{ contribution.created_at }}</small></p>
+            </div>
+        </div>
+        <a href="{% url 'chama:contribution_list' %}" class="btn btn-secondary mt-3">Back to Contributions</a>
+    </div>
+</div>
+{% endblock %}

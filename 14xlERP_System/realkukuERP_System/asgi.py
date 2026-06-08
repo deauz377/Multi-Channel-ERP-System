@@ -1,5 +1,5 @@
 """
-ASGI config for realkukuERP_System project.
+ASGI config for 14xlevel ERP project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

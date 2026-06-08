@@ -1,0 +1,101 @@
+{% extends 'chama/base.html' %}
+
+{% block title %}Loan #{{ loan.id }} Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Loan #{{ loan.id }}</h1>
+    </div>
+</div>
+
+<!-- Loan Details -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Loan Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Member:</strong> <a href="{% url 'chama:member_detail' loan.member.pk %}">{{ loan.member.name }}</a></p>
+                <p><strong>Principal:</strong> {{ loan.principal|floatformat:2 }}</p>
+                <p><strong>Interest Rate:</strong> {{ loan.interest }}%</p>
+                <p><strong>Total Amount (with interest):</strong> {{ loan.total_amount|floatformat:2 }}</p>
+                <p><strong>Due Date:</strong> {{ loan.due_date }}</p>
+                <p><strong>Status:</strong> <span class="badge bg-primary">{{ loan.get_status_display }}</span></p>
+                <p><strong>Description:</strong> {{ loan.description|default:"No description" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                {% if loan.status == 'pending' %}
+                    <form method="post" action="{% url 'chama:loan_approve' loan.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-sm w-100 mb-2">Approve Loan</button>
+                    </form>
+                {% elif loan.status == 'approved' %}
+                    <form method="post" action="{% url 'chama:loan_activate' loan.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm w-100 mb-2">Disburse Loan</button>
+                    </form>
+                {% endif %}
+                
+                {% if loan.status in 'active|approved' %}
+                    <a href="{% url 'chama:loan_payment_add' loan.pk %}" class="btn btn-info btn-sm w-100">Record Payment</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payments -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="mb-0">Payment History</h5>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <small class="text-muted">Total Paid: <strong>{{ total_paid|floatformat:2 }}</strong></small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if payments %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                    <tr>
+                                        <td>{{ payment.payment_date }}</td>
+                                        <td>{{ payment.amount|floatformat:2 }}</td>
+                                        <td>{{ payment.notes|default:"-" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No payments recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,79 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}RealKuku ERP{% endblock %}</title>
+    <title>{% block title %}14xlevel ERP{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-dark: #1E3A5F;
+            --primary: #2C5F8D;
+            --primary-light: #3D7BA8;
+            --bg-primary: #F5F7FA;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --border: #E0E4E8;
+            --border-dark: #D1D5DB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --info: #3B82F6;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--bg-primary);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-primary);
         }
+
         .navbar {
-            background: linear-gradient(90deg, #4CAF50, #2196F3);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-bottom: 3px solid #FF9800;
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid var(--border-dark);
         }
+
         .navbar-brand {
-            font-weight: bold;
+            font-weight: 700;
             color: white !important;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
         }
+
         .navbar-nav .nav-link {
-            color: rgba(255,255,255,0.9) !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
+
         .navbar-nav .nav-link:hover {
             color: white !important;
         }
+
         .sidebar {
-            background: rgba(255, 255, 255, 0.95);
+            background-color: var(--bg-secondary);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
             margin-bottom: 20px;
         }
+
+        .sidebar h5 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .sidebar a {
             display: block;
-            padding: 12px 15px;
-            color: #333;
+            padding: 11px 15px;
+            color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 6px;
             margin-bottom: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-weight: 500;
+            border-left: 3px solid transparent;
         }
-        .sidebar a:hover, .sidebar a.active {
-            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
-            color: white;
-            transform: translateX(5px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+
+        .sidebar a:hover {
+            background-color: #F0F4F8;
+            color: var(--primary);
+            border-left-color: var(--primary);
         }
-        .card {
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .card-header {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            color: white;
-            border-bottom: none;
-            border-radius: 12px 12px 0 0 !important;
+
+        .sidebar a.active {
+            background-color: #E8F1F8;
+            color: var(--primary-dark);
+            border-left-color: var(--primary);
             font-weight: 600;
         }
+
+        .card {
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: var(--bg-secondary);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            background-color: var(--primary-dark);
+            color: white;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0 !important;
+            font-weight: 600;
+            border: none;
+        }
+
         .stat-card {
             text-align: center;
             padding: 25px;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -87,77 +139,164 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A);
+            height: 3px;
+            background-color: var(--primary);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
         }
 
         .stat-card .number {
             font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            color: var(--primary-dark);
             margin-bottom: 10px;
         }
 
         .stat-card .label {
-            color: #6c757d;
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
             margin-top: 10px;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .btn-custom {
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            border: none;
         }
+
         .btn-primary {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border: none;
+            background-color: var(--primary);
+            color: white;
         }
+
         .btn-primary:hover {
-            background: linear-gradient(90deg, #5a6fd8, #6a4190);
-            transform: translateY(-2px);
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
+
         .btn-success {
-            background: linear-gradient(90deg, #4CAF50, #45a049);
-            border: none;
+            background-color: var(--success);
+            color: white;
         }
+
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
         .btn-warning {
-            background: linear-gradient(90deg, #FF9800, #F57C00);
-            border: none;
+            background-color: var(--warning);
+            color: white;
         }
+
+        .btn-warning:hover {
+            background-color: #D97706;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
         .btn-danger {
-            background: linear-gradient(90deg, #f44336, #d32f2f);
-            border: none;
+            background-color: var(--error);
+            color: white;
         }
+
+        .btn-danger:hover {
+            background-color: #DC2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
         .table-hover tbody tr:hover {
-            background-color: rgba(102, 126, 234, 0.1);
+            background-color: #F9FAFB;
         }
+
+        .table {
+            color: var(--text-primary);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #F9FAFB;
+        }
+
         .badge {
-            font-size: 0.8em;
+            font-size: 0.75rem;
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 6px;
+            font-weight: 600;
         }
+
+        .badge-success {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-warning {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-danger {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-info {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
         .alert {
-            border-radius: 12px;
-            border: none;
+            border-radius: 8px;
+            border: 1px solid;
         }
-        .alert-info {
-            background: linear-gradient(90deg, #00BCD4, #0097A7);
-            color: white;
-        }
+
         .alert-success {
-            background: linear-gradient(90deg, #4CAF50, #388E3C);
-            color: white;
+            background-color: #F0FDF4;
+            border-color: #BBEF63;
+            color: #166534;
         }
+
+        .alert-danger {
+            background-color: #FEF2F2;
+            border-color: #FECACA;
+            color: #991B1B;
+        }
+
+        .alert-warning {
+            background-color: #FFFBEB;
+            border-color: #FDE68A;
+            color: #92400E;
+        }
+
+        .alert-info {
+            background-color: #F0F9FF;
+            border-color: #BAE6FD;
+            color: #1E40AF;
+        }
+
+        /* Hide old sidebar for dashboard pages */
+        body.dashboard-page .sidebar {
+            display: none;
+        }
+
+        body.dashboard-page .container-fluid > .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        body.dashboard-page .container-fluid {
+            max-width: 100%;
+        }
+
         /* Mobile Optimization */
         @media (max-width: 768px) {
             .navbar-brand {
@@ -208,10 +347,10 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="/">
-                <i class="bi bi-graph-up"></i> RealKuku ERP
+                <i class="bi bi-graph-up"></i> 14xlevel ERP
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -231,36 +370,52 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2">
-                <div class="sidebar">
-                    <h5 class="mb-3"><i class="bi bi-menu-button-wide"></i> Menu</h5>
-                    <a href="/" class="{% if request.resolver_match.url_name == 'dashboard_overview' %}active{% endif %}">
-                        <i class="bi bi-house"></i> Dashboard
-                    </a>
-                    <a href="/sales/" class="{% if request.resolver_match.app_name == 'sales' %}active{% endif %}">
-                        <i class="bi bi-receipt"></i> Sales
-                    </a>
-                    <a href="/inventory/" class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
-                        <i class="bi bi-box2"></i> Inventory
-                    </a>
-                    <a href="/customers/" class="{% if request.resolver_match.app_name == 'customers' %}active{% endif %}">
-                        <i class="bi bi-people"></i> Customers
-                    </a>
-                    <a href="/expenses/" class="{% if request.resolver_match.app_name == 'expenses' %}active{% endif %}">
-                        <i class="bi bi-cash-flow"></i> Expenses
-                    </a>
-                    <a href="/chama/" class="{% if request.resolver_match.app_name == 'chama' %}active{% endif %}">
-                        <i class="bi bi-piggy-bank"></i> Chama
-                    </a>
-                </div>
-            </div>
-
-            <!-- Content -->
-            <div class="col-md-9 col-lg-10">
+    <!-- Sidebar Navigation (For Dashboard) -->
+    <aside class="sidebar-nav" id="sidebarNav">
+        <div class="sidebar-header">Menu</div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="/" class="{% if request.resolver_match.url_name == 'dashboard_overview' %}active{% endif %}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/sales/" class="{% if request.resolver_match.app_name == 'sales' %}active{% endif %}">
+                    <i class="bi bi-receipt"></i> Sales
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="return false;">
+                    <i class="bi bi-bag"></i> Purchases
+                </a>
+            </li>
+            <li>
+                <a href="/inventory/" class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
+                    <i class="bi bi-box2"></i> Inventory
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="return false;">
+                    <i class="bi bi-calculator"></i> Accounting
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="return false;">
+                    <i class="bi bi-people"></i> HR & Payroll
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="return false;">
+                    <i class="bi bi-bar-chart"></i> Reports
+                </a>
+            </li>
+            <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <a href="#" onclick="return false;">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+        </ul>
+    </aside>
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">

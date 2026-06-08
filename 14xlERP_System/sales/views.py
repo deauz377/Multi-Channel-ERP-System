@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Sum, Count, Q, F
 from datetime import datetime, timedelta
-from .models import Invoice, InvoiceItem, Payment
-from .forms import InvoiceForm, InvoiceItemForm, PaymentForm
+from .models import Invoice, InvoiceItem, Payment, Order, OrderItem
+from .forms import InvoiceForm, InvoiceItemForm, PaymentForm, OrderForm, OrderItemForm
 
 def sales_overview(request):
     # Get today's sales
@@ -49,9 +49,9 @@ def invoice_list(request):
 
     if status_filter:
         if status_filter == 'paid':
-            invoices = invoices.filter(paid__gte=models.F('total'))
+            invoices = invoices.filter(paid__gte=F('total'))
         elif status_filter == 'partial':
-            invoices = invoices.filter(paid__gt=0, paid__lt=models.F('total'))
+            invoices = invoices.filter(paid__gt=0, paid__lt=F('total'))
         elif status_filter == 'unpaid':
             invoices = invoices.filter(paid=0)
 
@@ -77,6 +77,79 @@ def invoice_detail(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
     items = invoice.items.all()
     return render(request, 'sales/invoice_detail.html', {'invoice': invoice, 'items': items})
+
+def order_list(request):
+    orders = Order.objects.all().order_by('-date')
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+
+    if search_query:
+        orders = orders.filter(
+            Q(id__icontains=search_query) |
+            Q(customer__name__icontains=search_query)
+        )
+
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+
+    context = {
+        'orders': orders,
+        'search_query': search_query,
+        'status_filter': status_filter,
+        'status_choices': Order.STATUS_CHOICES,
+    }
+    return render(request, 'sales/order_list.html', context)
+
+
+def order_create(request):
+    initial = {}
+    if request.GET.get('order_type'):
+        initial['order_type'] = request.GET.get('order_type')
+    if request.GET.get('supplier'):
+        initial['supplier'] = request.GET.get('supplier')
+    if request.GET.get('customer'):
+        initial['customer'] = request.GET.get('customer')
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            if order.order_type == 'customer':
+                order.supplier = None
+            else:
+                order.customer = None
+            order.total = 0
+            order.save()
+            messages.success(request, 'Order created! Add items below.')
+            return redirect('sales:order_detail', pk=order.pk)
+    else:
+        form = OrderForm(initial=initial)
+    return render(request, 'sales/order_form.html', {'form': form, 'title': 'Create Order'})
+
+
+def order_detail(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    items = order.items.all()
+    return render(request, 'sales/order_detail.html', {'order': order, 'items': items})
+
+
+def order_item_add(request, order_pk):
+    order = get_object_or_404(Order, pk=order_pk)
+    if request.method == 'POST':
+        form = OrderItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.order = order
+            item.save()
+            total = order.items.aggregate(total=Sum(F('price') * F('qty')))['total'] or 0
+            order.total = total
+            order.save()
+            messages.success(request, 'Item added to order!')
+            return redirect('sales:order_detail', pk=order.pk)
+    else:
+        form = OrderItemForm()
+    return render(request, 'sales/order_item_form.html', {'form': form, 'order': order})
+
 
 def invoice_item_add(request, invoice_pk):
     invoice = get_object_or_404(Invoice, pk=invoice_pk)

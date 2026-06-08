@@ -1,5 +1,5 @@
 """
-WSGI config for realkukuERP_System project.
+WSGI config for 14xlevel ERP project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

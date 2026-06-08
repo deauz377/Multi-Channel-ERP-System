@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Inventory Overview - RealKuku ERP{% endblock %}
+{% block title %}Inventory Overview - 14xlevel ERP{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
@@ -17,31 +17,31 @@
 <!-- Stats Row -->
 <div class="row mb-4">
     <div class="col-md-6 col-lg-3">
-        <div class="stat-card" style="border-top: 4px solid #FF6B6B;">
+        <div class="stat-card">
             <div class="number">{{ total_products }}</div>
             <div class="label">Total Products</div>
-            <i class="bi bi-box" style="font-size: 2rem; color: #FF6B6B; margin-top: 10px;"></i>
+            <i class="bi bi-box" style="font-size: 2rem; color: var(--primary); margin-top: 10px;"></i>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="stat-card" style="border-top: 4px solid #4ECDC4;">
+        <div class="stat-card">
             <div class="number">{{ total_suppliers }}</div>
             <div class="label">Total Suppliers</div>
-            <i class="bi bi-truck" style="font-size: 2rem; color: #4ECDC4; margin-top: 10px;"></i>
+            <i class="bi bi-truck" style="font-size: 2rem; color: var(--primary-light); margin-top: 10px;"></i>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="stat-card" style="border-top: 4px solid #45B7D1;">
+        <div class="stat-card">
             <div class="number">{{ low_stock_products }}</div>
             <div class="label">Low Stock Items</div>
-            <i class="bi bi-exclamation-triangle" style="font-size: 2rem; color: #45B7D1; margin-top: 10px;"></i>
+            <i class="bi bi-exclamation-triangle" style="font-size: 2rem; color: var(--error); margin-top: 10px;"></i>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="stat-card" style="border-top: 4px solid #FFA07A;">
+        <div class="stat-card">
             <div class="number">KES {{ total_stock_value }}</div>
             <div class="label">Stock Value</div>
-            <i class="bi bi-cash-coin" style="font-size: 2rem; color: #FFA07A; margin-top: 10px;"></i>
+            <i class="bi bi-cash-coin" style="font-size: 2rem; color: var(--warning); margin-top: 10px;"></i>
         </div>
     </div>
 </div>
@@ -90,7 +90,7 @@
                 </div>
                 {% else %}
                 <div class="text-center py-4">
-                    <i class="bi bi-box" style="font-size: 3rem; color: #ccc;"></i>
+                    <i class="bi bi-box" style="font-size: 3rem; color: var(--border-dark);"></i>
                     <p class="text-muted mt-2">No products yet. <a href="{% url 'inventory:product_create' %}">Add your first product</a></p>
                 </div>
                 {% endif %}
@@ -125,7 +125,7 @@
                 </ul>
                 {% else %}
                 <div class="text-center py-4">
-                    <i class="bi bi-check-circle" style="font-size: 3rem; color: #28a745;"></i>
+                    <i class="bi bi-check-circle" style="font-size: 3rem; color: var(--success);"></i>
                     <p class="text-success mt-2">All items are well stocked!</p>
                 </div>
                 {% endif %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, ProtectedError
 from django.http import HttpResponse
 import csv
 from .models import Product, Supplier
@@ -37,9 +37,9 @@ def product_list(request):
 
     if search_query:
         products = products.filter(
-            models.Q(name__icontains=search_query) |
-            models.Q(sku__icontains=search_query) |
-            models.Q(supplier__name__icontains=search_query)
+            Q(name__icontains=search_query) |
+            Q(sku__icontains=search_query) |
+            Q(supplier__name__icontains=search_query)
         )
 
     if category_filter:
@@ -79,11 +79,29 @@ def product_edit(request, pk):
 
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    
+    # Check if product can be safely deleted
+    from sales.models import InvoiceItem, OrderItem
+    has_invoice_items = InvoiceItem.objects.filter(product=product).exists()
+    has_order_items = OrderItem.objects.filter(product=product).exists()
+    can_delete = not (has_invoice_items or has_order_items)
+    
     if request.method == 'POST':
-        product.delete()
-        messages.success(request, 'Product deleted!')
-        return redirect('inventory:product_list')
-    return render(request, 'inventory/product_confirm_delete.html', {'product': product})
+        try:
+            product.delete()
+            messages.success(request, 'Product deleted successfully!')
+            return redirect('inventory:product_list')
+        except ProtectedError:
+            messages.error(request, 'Cannot delete this product because it is referenced in existing orders or invoices. Please remove all related records first.')
+            return redirect('inventory:product_list')
+    
+    context = {
+        'product': product,
+        'can_delete': can_delete,
+        'has_invoice_items': has_invoice_items,
+        'has_order_items': has_order_items,
+    }
+    return render(request, 'inventory/product_confirm_delete.html', context)
 
 # Suppliers
 def supplier_list(request):

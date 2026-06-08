@@ -1,0 +1,78 @@
+{% extends 'chama/base.html' %}
+
+{% block title %}Loans - Chama Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Loans</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'chama:loan_create' %}" class="btn btn-primary">Create Loan</a>
+    </div>
+</div>
+
+<!-- Status Filter -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div class="btn-group">
+            <a href="{% url 'chama:loan_list' %}" class="btn btn-outline-secondary {% if not current_status %}active{% endif %}">All</a>
+            <a href="{% url 'chama:loan_list' %}?status=pending" class="btn btn-outline-secondary {% if current_status == 'pending' %}active{% endif %}">Pending</a>
+            <a href="{% url 'chama:loan_list' %}?status=approved" class="btn btn-outline-secondary {% if current_status == 'approved' %}active{% endif %}">Approved</a>
+            <a href="{% url 'chama:loan_list' %}?status=active" class="btn btn-outline-secondary {% if current_status == 'active' %}active{% endif %}">Active</a>
+            <a href="{% url 'chama:loan_list' %}?status=paid" class="btn btn-outline-secondary {% if current_status == 'paid' %}active{% endif %}">Paid</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if loans %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Member</th>
+                            <th>Principal</th>
+                            <th>Interest Rate</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for loan in loans %}
+                            <tr>
+                                <td>#{{ loan.id }}</td>
+                                <td>{{ loan.member.name }}</td>
+                                <td>{{ loan.principal|floatformat:2 }}</td>
+                                <td>{{ loan.interest }}%</td>
+                                <td>{{ loan.due_date }}</td>
+                                <td>
+                                    {% if loan.status == 'pending' %}
+                                        <span class="badge bg-secondary">Pending</span>
+                                    {% elif loan.status == 'approved' %}
+                                        <span class="badge bg-info">Approved</span>
+                                    {% elif loan.status == 'active' %}
+                                        <span class="badge bg-warning">Active</span>
+                                    {% elif loan.status == 'paid' %}
+                                        <span class="badge bg-success">Paid</span>
+                                    {% elif loan.status == 'defaulted' %}
+                                        <span class="badge bg-danger">Defaulted</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'chama:loan_detail' loan.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center text-muted">No loans found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

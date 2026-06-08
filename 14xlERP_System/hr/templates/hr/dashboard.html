@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}HR Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="display-4">HR Management Dashboard</h1>
+            <p class="lead">Welcome to the Human Resources Management System</p>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Employees</h5>
+                    <p class="card-text display-6">{{ total_employees }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Departments</h5>
+                    <p class="card-text display-6">{{ total_departments }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Leave Requests</h5>
+                    <p class="card-text display-6">{{ pending_leaves }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Active Positions</h5>
+                    <p class="card-text display-6">{{ total_positions }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Quick Actions</h3>
+            <div class="btn-group" role="group">
+                <a href="{% url 'employee_list' %}" class="btn btn-primary">View Employees</a>
+                <a href="{% url 'department_list' %}" class="btn btn-info">Departments</a>
+                <a href="{% url 'leave_request_list' %}" class="btn btn-warning">Leave Requests</a>
+                <a href="{% url 'attendance_list' %}" class="btn btn-secondary">Attendance</a>
+                <a href="{% url 'recruitment_list' %}" class="btn btn-success">Recruitment</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
