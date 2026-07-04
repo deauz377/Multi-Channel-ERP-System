@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ve8ddzzo7r=kb45my%ivno5n9n@cy-iv8@nmhe(%f+tf_3%w6u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
 
 
 # Application definition
@@ -91,10 +91,16 @@ WSGI_APPLICATION = 'realkukuERP_System.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import os
+
+DB_PATH = Path(os.environ.get('LOCALAPPDATA', BASE_DIR)) / '14xlERP' / 'db.sqlite3'
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+# Use a user-writable SQLite path so local admin and data writes work reliably.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(DB_PATH),
     }
 }
 

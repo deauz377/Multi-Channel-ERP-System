@@ -76,7 +76,25 @@ def invoice_create(request):
 def invoice_detail(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
     items = invoice.items.all()
-    return render(request, 'sales/invoice_detail.html', {'invoice': invoice, 'items': items})
+    item_rows = []
+    for item in items:
+        item_rows.append({
+            'product_name': item.product.name,
+            'qty': item.qty,
+            'price': item.price,
+            'subtotal': item.qty * item.price,
+        })
+    return render(request, 'sales/invoice_detail.html', {'invoice': invoice, 'items': item_rows})
+
+
+def invoice_delete(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk)
+    if request.method == 'POST':
+        invoice.delete()
+        messages.success(request, 'Invoice deleted successfully.')
+        return redirect('sales:invoice_list')
+    return render(request, 'sales/invoice_confirm_delete.html', {'invoice': invoice})
+
 
 def order_list(request):
     orders = Order.objects.all().order_by('-date')

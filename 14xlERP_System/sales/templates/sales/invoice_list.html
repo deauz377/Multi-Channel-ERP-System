@@ -72,6 +72,7 @@
                             </td>
                             <td>
                                 <a href="{% url 'sales:invoice_detail' invoice.pk %}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i> View</a>
+                                <a href="{% url 'sales:invoice_delete' invoice.pk %}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</a>
                             </td>
                         </tr>
                     {% endfor %}

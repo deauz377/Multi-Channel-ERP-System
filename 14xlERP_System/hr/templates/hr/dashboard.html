@@ -53,11 +53,11 @@
         <div class="col-md-12">
             <h3>Quick Actions</h3>
             <div class="btn-group" role="group">
-                <a href="{% url 'employee_list' %}" class="btn btn-primary">View Employees</a>
-                <a href="{% url 'department_list' %}" class="btn btn-info">Departments</a>
-                <a href="{% url 'leave_request_list' %}" class="btn btn-warning">Leave Requests</a>
-                <a href="{% url 'attendance_list' %}" class="btn btn-secondary">Attendance</a>
-                <a href="{% url 'recruitment_list' %}" class="btn btn-success">Recruitment</a>
+                <a href="{% url 'hr:employee_list' %}" class="btn btn-primary">View Employees</a>
+                <a href="{% url 'hr:department_list' %}" class="btn btn-info">Departments</a>
+                <a href="{% url 'hr:leave_request_list' %}" class="btn btn-warning">Leave Requests</a>
+                <a href="{% url 'hr:attendance_list' %}" class="btn btn-secondary">Attendance</a>
+                <a href="{% url 'hr:recruitment_list' %}" class="btn btn-success">Recruitment</a>
             </div>
         </div>
     </div>

@@ -53,10 +53,10 @@
             <tbody>
                 {% for item in items %}
                     <tr>
-                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product_name }}</td>
                         <td>{{ item.qty }}</td>
                         <td>KES {{ item.price }}</td>
-                        <td><strong>KES {{ item.qty|mul:item.price|floatformat:2 }}</strong></td>
+                        <td><strong>KES {{ item.subtotal|floatformat:2 }}</strong></td>
                     </tr>
                 {% endfor %}
             </tbody>

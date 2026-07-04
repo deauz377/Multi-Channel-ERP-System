@@ -22,14 +22,15 @@ from .forms import (
 def accounting_dashboard(request):
     """Accounting dashboard overview"""
     tenant = request.user.profile.tenant if hasattr(request.user, 'profile') else None
-    
-    # Calculate totals
-    total_receivables = Invoice.objects.filter(tenant=tenant, status__in=['partial', 'issued']).aggregate(
-        total=Sum('balance_due'))['total'] or 0
-    total_payables = Bill.objects.filter(tenant=tenant, status__in=['partial', 'received']).aggregate(
-        total=Sum('balance_due'))['total'] or 0
-    
+
+    receivable_invoices = Invoice.objects.filter(tenant=tenant, status__in=['partial', 'issued'])
+    payable_bills = Bill.objects.filter(tenant=tenant, status__in=['partial', 'received'])
+    total_receivables = sum((invoice.total_amount - invoice.paid_amount) for invoice in receivable_invoices) or 0
+    total_payables = sum((bill.total_amount - bill.paid_amount) for bill in payable_bills) or 0
+
     context = {
+        'total_invoices': Invoice.objects.filter(tenant=tenant).count() if tenant else 0,
+        'total_journal_entries': JournalEntry.objects.filter(tenant=tenant).count() if tenant else 0,
         'chart_accounts': ChartOfAccounts.objects.filter(tenant=tenant).count() if tenant else 0,
         'invoices': Invoice.objects.filter(tenant=tenant, status__in=['issued', 'sent']).count() if tenant else 0,
         'bills': Bill.objects.filter(tenant=tenant, status__in=['received', 'partial']).count() if tenant else 0,

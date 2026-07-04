@@ -47,6 +47,12 @@
             letter-spacing: -0.5px;
         }
 
+        .navbar-brand img {
+            height: 50px;
+            width: auto;
+            margin-right: 8px;
+        }
+
         .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
@@ -55,6 +61,13 @@
 
         .navbar-nav .nav-link:hover {
             color: white !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: white !important;
+            font-weight: 700;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
         }
 
         .sidebar {
@@ -356,6 +369,43 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.app_name == 'sales' %}active{% endif %}" href="/sales/">
+                            <i class="bi bi-receipt"></i> Sales
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.app_name == 'expenses' %}active{% endif %}" href="{% url 'expenses:expense_list' %}">
+                            <i class="bi bi-bag"></i> Purchases
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.app_name == 'inventory' %}active{% endif %}" href="/inventory/">
+                            <i class="bi bi-box2"></i> Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.app_name == 'accounting' %}active{% endif %}" href="{% url 'accounting:dashboard' %}">
+                            <i class="bi bi-calculator"></i> Accounting
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.app_name == 'hr' %}active{% endif %}" href="{% url 'hr:dashboard' %}">
+                            <i class="bi bi-people"></i> HR & Payroll
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'trial_balance' %}active{% endif %}" href="{% url 'accounting:trial_balance' %}">
+                            <i class="bi bi-bar-chart"></i> Reports
+                        </a>
+                    </li>
+                </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/admin"><i class="bi bi-gear"></i> Admin</a>
@@ -370,52 +420,6 @@
         </div>
     </nav>
 
-    <!-- Sidebar Navigation (For Dashboard) -->
-    <aside class="sidebar-nav" id="sidebarNav">
-        <div class="sidebar-header">Menu</div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="/" class="{% if request.resolver_match.url_name == 'dashboard_overview' %}active{% endif %}">
-                    <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="/sales/" class="{% if request.resolver_match.app_name == 'sales' %}active{% endif %}">
-                    <i class="bi bi-receipt"></i> Sales
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="return false;">
-                    <i class="bi bi-bag"></i> Purchases
-                </a>
-            </li>
-            <li>
-                <a href="/inventory/" class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
-                    <i class="bi bi-box2"></i> Inventory
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="return false;">
-                    <i class="bi bi-calculator"></i> Accounting
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="return false;">
-                    <i class="bi bi-people"></i> HR & Payroll
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="return false;">
-                    <i class="bi bi-bar-chart"></i> Reports
-                </a>
-            </li>
-            <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                <a href="#" onclick="return false;">
-                    <i class="bi bi-gear"></i> Settings
-                </a>
-            </li>
-        </ul>
-    </aside>
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
